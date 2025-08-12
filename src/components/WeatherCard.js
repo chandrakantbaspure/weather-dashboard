@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { MapPin, Calendar, RefreshCw, Droplets, Wind, Eye, Thermometer, Gauge } from 'lucide-react';
 import { useWeather } from '../context/WeatherContext';
-import { format } from 'date-fns';
+import { format } from '../utils/dateUtils';
 
 const WeatherCard = ({ weather }) => {
   const { 

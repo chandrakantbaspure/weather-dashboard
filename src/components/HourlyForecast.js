@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useWeather } from '../context/WeatherContext';
-import { format } from 'date-fns';
+import { format } from '../utils/dateUtils';
 
 const HourlyForecast = ({ forecast }) => {
   const { getWeatherIcon, formatTemperature, formatWindSpeed } = useWeather();

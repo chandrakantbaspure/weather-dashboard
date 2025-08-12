@@ -10,7 +10,7 @@ import {
   Compass
 } from 'lucide-react';
 import { useWeather } from '../context/WeatherContext';
-import { format } from 'date-fns';
+import { format } from '../utils/dateUtils';
 
 const WeatherDetails = ({ weather }) => {
   const { 

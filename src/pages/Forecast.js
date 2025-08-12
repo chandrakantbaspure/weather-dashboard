@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Calendar, Cloud, Wind, Droplets } from 'lucide-react';
 import { useLocation } from '../context/LocationContext';
 import { useWeather } from '../context/WeatherContext';
-import { format } from 'date-fns';
+import { format } from '../utils/dateUtils';
 
 const Forecast = () => {
   const { currentLocation } = useLocation();
