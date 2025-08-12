@@ -1,13 +1,12 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { MapPin, Calendar, RefreshCw, Droplets, Wind, Eye, Thermometer, Gauge, Cloud, CloudRain, Sun, CloudLightning } from 'lucide-react';
+import { MapPin, Calendar, RefreshCw, Droplets, Wind, Eye, Thermometer, Gauge } from 'lucide-react';
 import { useWeather } from '../context/WeatherContext';
 import { format } from 'date-fns';
 
 const WeatherCard = ({ weather }) => {
   const { 
     getWeatherIcon, 
-    getWeatherBackground, 
     formatTemperature, 
     formatWindSpeed,
     getWindDirection,
