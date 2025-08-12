@@ -75,7 +75,7 @@ const WeatherDetails = ({ weather }) => {
     <div className="space-y-4">
       <div className="weather-card">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Weather Details</h3>
-        <div className="space-y-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {details.map((detail, index) => {
             const Icon = detail.icon;
             return (
@@ -84,19 +84,21 @@ const WeatherDetails = ({ weather }) => {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.3, delay: index * 0.1 }}
-                className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors duration-200"
+                className="flex items-center p-3 rounded-lg hover:bg-gray-50 transition-colors duration-200 border border-gray-100"
               >
-                <div className="flex items-center space-x-3">
-                  <div className={`p-2 rounded-lg ${detail.bgColor}`}>
-                    <Icon className={`w-4 h-4 ${detail.color}`} />
-                  </div>
-                  <span className="text-sm font-medium text-gray-700">
-                    {detail.label}
-                  </span>
+                <div className={`p-2 rounded-lg ${detail.bgColor} mr-3 flex-shrink-0`}>
+                  <Icon className={`w-4 h-4 ${detail.color}`} />
                 </div>
-                <span className="text-sm font-semibold text-gray-900">
-                  {detail.value}
-                </span>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-gray-700 truncate">
+                      {detail.label}
+                    </span>
+                    <span className="text-sm font-semibold text-gray-900 ml-2 flex-shrink-0">
+                      {detail.value}
+                    </span>
+                  </div>
+                </div>
               </motion.div>
             );
           })}

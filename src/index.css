@@ -1,0 +1,265 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-gray-200;
+  }
+  
+  html {
+    @apply h-full;
+    /* Ensure proper viewport height on mobile */
+    height: 100vh;
+    height: 100dvh; /* Dynamic viewport height for mobile */
+  }
+  
+  body {
+    @apply bg-gray-50 text-gray-900 font-sans h-full;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    /* Prevent content from being hidden behind mobile browser UI */
+    min-height: 100vh;
+    min-height: 100dvh;
+    /* Safe area for devices with notches */
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+
+  #root {
+    @apply h-full;
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+}
+
+@layer components {
+  /* Main app container with full height */
+  .app-container {
+    @apply min-h-screen min-h-dvh flex flex-col;
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+  /* Main content area with proper spacing */
+  .main-content {
+    @apply flex-1 w-full;
+    /* Ensure content takes full available height */
+    min-height: calc(100vh - 80px); /* Adjust based on header height */
+    min-height: calc(100dvh - 80px);
+    /* Add bottom padding to prevent footer overlap */
+    padding-bottom: 2rem;
+    padding-bottom: env(safe-area-inset-bottom, 2rem);
+  }
+
+  /* Page container with full height */
+  .page-container {
+    @apply w-full h-full;
+    min-height: calc(100vh - 120px); /* Header + padding */
+    min-height: calc(100dvh - 120px);
+    /* Ensure content doesn't get cut off */
+    padding-bottom: 4rem;
+    padding-bottom: max(4rem, env(safe-area-inset-bottom));
+  }
+
+  /* Dashboard specific container */
+  .dashboard-container {
+    @apply max-w-7xl mx-auto space-y-6;
+    min-height: calc(100vh - 140px);
+    min-height: calc(100dvh - 140px);
+    padding-bottom: 3rem;
+    padding-bottom: max(3rem, env(safe-area-inset-bottom));
+  }
+
+  /* Forecast page container */
+  .forecast-container {
+    @apply max-w-7xl mx-auto space-y-6;
+    min-height: calc(100vh - 140px);
+    min-height: calc(100dvh - 140px);
+    padding-bottom: 3rem;
+    padding-bottom: max(3rem, env(safe-area-inset-bottom));
+  }
+
+  /* Map page container */
+  .map-container {
+    @apply max-w-7xl mx-auto space-y-6;
+    min-height: calc(100vh - 140px);
+    min-height: calc(100dvh - 140px);
+    padding-bottom: 3rem;
+    padding-bottom: max(3rem, env(safe-area-inset-bottom));
+  }
+
+  /* Analytics page container */
+  .analytics-container {
+    @apply max-w-7xl mx-auto space-y-6;
+    min-height: calc(100vh - 140px);
+    min-height: calc(100dvh - 140px);
+    padding-bottom: 3rem;
+    padding-bottom: max(3rem, env(safe-area-inset-bottom));
+  }
+
+  .weather-card {
+    @apply bg-white rounded-xl shadow-lg p-6 border border-gray-100;
+  }
+  
+  .weather-gradient {
+    @apply bg-gradient-to-br from-blue-500 to-purple-600;
+  }
+  
+  .sunny-gradient {
+    @apply bg-gradient-to-br from-yellow-400 to-orange-500;
+  }
+  
+  .cloudy-gradient {
+    @apply bg-gradient-to-br from-gray-400 to-blue-400;
+  }
+  
+  .rainy-gradient {
+    @apply bg-gradient-to-br from-blue-600 to-gray-700;
+  }
+  
+  .btn-primary {
+    @apply bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+  }
+  
+  .weather-icon {
+    @apply w-16 h-16;
+  }
+  
+  .temperature-large {
+    @apply text-6xl font-bold;
+  }
+
+  /* Loading container with full height */
+  .loading-container {
+    @apply flex items-center justify-center;
+    min-height: calc(100vh - 80px);
+    min-height: calc(100dvh - 80px);
+    padding-bottom: 2rem;
+    padding-bottom: max(2rem, env(safe-area-inset-bottom));
+  }
+
+  /* Error container with full height */
+  .error-container {
+    @apply flex items-center justify-center;
+    min-height: calc(100vh - 80px);
+    min-height: calc(100dvh - 80px);
+    padding-bottom: 2rem;
+    padding-bottom: max(2rem, env(safe-area-inset-bottom));
+  }
+
+  /* Welcome container with full height */
+  .welcome-container {
+    @apply max-w-4xl mx-auto;
+    min-height: calc(100vh - 140px);
+    min-height: calc(100dvh - 140px);
+    padding-bottom: 3rem;
+    padding-bottom: max(3rem, env(safe-area-inset-bottom));
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-400;
+}
+
+/* Loading animation */
+.loading-spinner {
+  @apply animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600;
+}
+
+/* Map container styles */
+.leaflet-container {
+  @apply rounded-xl overflow-hidden;
+  /* Ensure map takes proper height */
+  height: 400px;
+  min-height: 300px;
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 768px) {
+  .main-content {
+    min-height: calc(100vh - 70px); /* Smaller header on mobile */
+    min-height: calc(100dvh - 70px);
+    padding-bottom: 3rem;
+    padding-bottom: max(3rem, env(safe-area-inset-bottom));
+  }
+
+  .page-container {
+    min-height: calc(100vh - 100px);
+    min-height: calc(100dvh - 100px);
+    padding-bottom: 5rem;
+    padding-bottom: max(5rem, env(safe-area-inset-bottom));
+  }
+
+  .dashboard-container,
+  .forecast-container,
+  .map-container,
+  .analytics-container {
+    min-height: calc(100vh - 110px);
+    min-height: calc(100dvh - 110px);
+    padding-bottom: 4rem;
+    padding-bottom: max(4rem, env(safe-area-inset-bottom));
+  }
+
+  .loading-container,
+  .error-container {
+    min-height: calc(100vh - 70px);
+    min-height: calc(100dvh - 70px);
+    padding-bottom: 3rem;
+    padding-bottom: max(3rem, env(safe-area-inset-bottom));
+  }
+
+  .welcome-container {
+    min-height: calc(100vh - 100px);
+    min-height: calc(100dvh - 100px);
+    padding-bottom: 4rem;
+    padding-bottom: max(4rem, env(safe-area-inset-bottom));
+  }
+
+  .leaflet-container {
+    height: 300px;
+    min-height: 250px;
+  }
+}
+
+/* Extra small mobile devices */
+@media (max-width: 480px) {
+  .main-content {
+    padding-bottom: 4rem;
+    padding-bottom: max(4rem, env(safe-area-inset-bottom));
+  }
+
+  .page-container {
+    padding-bottom: 6rem;
+    padding-bottom: max(6rem, env(safe-area-inset-bottom));
+  }
+
+  .dashboard-container,
+  .forecast-container,
+  .map-container,
+  .analytics-container {
+    padding-bottom: 5rem;
+    padding-bottom: max(5rem, env(safe-area-inset-bottom));
+  }
+
+  .welcome-container {
+    padding-bottom: 5rem;
+    padding-bottom: max(5rem, env(safe-area-inset-bottom));
+  }
+}
+
+

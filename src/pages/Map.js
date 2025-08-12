@@ -55,8 +55,19 @@ const Map = () => {
     setIsLoading(false);
   };
 
+  if (isLoading) {
+    return (
+      <div className="loading-container">
+        <div className="text-center">
+          <div className="loading-spinner mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading map data...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="map-container">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -103,89 +114,73 @@ const Map = () => {
                 
                 <MapUpdater center={currentLocation} />
                 
-                {currentLocation && currentWeather && (
+                {currentLocation && (
                   <Marker position={[currentLocation.lat, currentLocation.lon]}>
                     <Popup>
                       <div className="text-center">
-                        <h3 className="font-semibold text-gray-900 mb-2">
+                        <h3 className="font-semibold text-gray-900">
                           {currentLocation.name}
                         </h3>
-                        <div className="flex items-center justify-center mb-2">
-                          <img
-                            src={`https://openweathermap.org/img/wn/${currentWeather.current.icon}@2x.png`}
-                            alt={currentWeather.current.description}
-                            className="w-8 h-8"
-                          />
-                        </div>
-                        <div className="text-lg font-bold text-gray-900">
-                          {Math.round(currentWeather.current.temp)}°C
-                        </div>
-                        <div className="text-sm text-gray-600 capitalize">
-                          {currentWeather.current.description}
-                        </div>
+                        <p className="text-sm text-gray-600">
+                          {currentLocation.state && `${currentLocation.state}, `}
+                          {currentLocation.country}
+                        </p>
                       </div>
                     </Popup>
                   </Marker>
                 )}
               </MapContainer>
-              
-              {isLoading && (
-                <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-10">
-                  <div className="text-center">
-                    <div className="loading-spinner mx-auto mb-2"></div>
-                    <p className="text-sm text-gray-600">Loading weather data...</p>
-                  </div>
-                </div>
-              )}
             </div>
           </motion.div>
         </div>
 
         {/* Weather Information Panel */}
         <div className="space-y-6">
-          {currentLocation && currentWeather ? (
+          {currentWeather ? (
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               className="weather-card"
             >
-              <div className="flex items-center space-x-2 mb-4">
-                <MapPin className="w-5 h-5 text-gray-600" />
+              <div className="flex items-center space-x-3 mb-4">
+                <MapPin className="w-6 h-6 text-blue-500" />
                 <h2 className="text-xl font-semibold text-gray-900">
-                  {currentLocation.name}
+                  Current Location
                 </h2>
               </div>
               
-              <div className="text-center mb-4">
-                <img
-                  src={`https://openweathermap.org/img/wn/${currentWeather.current.icon}@2x.png`}
-                  alt={currentWeather.current.description}
-                  className="w-16 h-16 mx-auto mb-2"
-                />
-                <div className="text-3xl font-bold text-gray-900">
-                  {Math.round(currentWeather.current.temp)}°C
+              <div className="space-y-4">
+                <div className="text-center">
+                  <img
+                    src={`https://openweathermap.org/img/wn/${currentWeather.current.icon}@2x.png`}
+                    alt={currentWeather.current.description}
+                    className="w-16 h-16 mx-auto mb-2"
+                  />
+                  <div className="text-2xl font-bold text-gray-900">
+                    {Math.round(currentWeather.current.temp)}°C
+                  </div>
+                  <div className="text-sm text-gray-600 capitalize">
+                    {currentWeather.current.description}
+                  </div>
                 </div>
-                <div className="text-sm text-gray-600 capitalize">
-                  {currentWeather.current.description}
-                </div>
-              </div>
-              
-              <div className="space-y-3">
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Feels like</span>
-                  <span className="font-medium">{Math.round(currentWeather.current.feels_like)}°C</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Humidity</span>
-                  <span className="font-medium">{currentWeather.current.humidity}%</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Wind</span>
-                  <span className="font-medium">{Math.round(currentWeather.current.wind_speed * 10) / 10} m/s</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Pressure</span>
-                  <span className="font-medium">{currentWeather.current.pressure} hPa</span>
+                
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600">Humidity</span>
+                    <span className="font-semibold">{currentWeather.current.humidity}%</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600">Wind Speed</span>
+                    <span className="font-semibold">{currentWeather.current.wind_speed} m/s</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600">Pressure</span>
+                    <span className="font-semibold">{currentWeather.current.pressure} hPa</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600">Visibility</span>
+                    <span className="font-semibold">{currentWeather.current.visibility} km</span>
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -199,10 +194,10 @@ const Map = () => {
                 <Cloud className="w-8 h-8 text-gray-400" />
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                No Location Selected
+                No Weather Data
               </h3>
               <p className="text-gray-600">
-                Click on the map or use your current location to view weather information
+                Click on the map to get weather information for that location
               </p>
             </motion.div>
           )}
@@ -214,19 +209,21 @@ const Map = () => {
             transition={{ delay: 0.2 }}
             className="weather-card"
           >
-            <h3 className="text-lg font-semibold text-gray-900 mb-3">How to Use</h3>
-            <div className="space-y-2 text-sm text-gray-600">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              How to Use
+            </h3>
+            <div className="space-y-3 text-sm text-gray-600">
               <div className="flex items-start space-x-2">
-                <div className="w-2 h-2 bg-primary-500 rounded-full mt-2 flex-shrink-0"></div>
+                <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
                 <p>Click anywhere on the map to get weather data for that location</p>
               </div>
               <div className="flex items-start space-x-2">
-                <div className="w-2 h-2 bg-primary-500 rounded-full mt-2 flex-shrink-0"></div>
-                <p>Use the "My Location" button to get weather for your current position</p>
+                <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
+                <p>Use the "My Location" button to center the map on your current position</p>
               </div>
               <div className="flex items-start space-x-2">
-                <div className="w-2 h-2 bg-primary-500 rounded-full mt-2 flex-shrink-0"></div>
-                <p>Zoom in/out to explore different areas</p>
+                <div className="w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0"></div>
+                <p>Zoom in/out to explore different areas and get detailed weather information</p>
               </div>
             </div>
           </motion.div>
