@@ -58,18 +58,43 @@ export const LocationProvider = ({ children }) => {
 
     dispatch({ type: 'SET_LOADING', payload: true });
 
+    // Use high accuracy for better location precision
+    const options = {
+      enableHighAccuracy: true,
+      timeout: 10000,
+      maximumAge: 300000 // 5 minutes
+    };
+
     navigator.geolocation.getCurrentPosition(
       async (position) => {
         try {
           const { latitude, longitude } = position.coords;
           
-          // Get location name from coordinates using reverse geocoding
+          // Get location name from coordinates using reverse geocoding with higher limit for better accuracy
           const response = await axios.get(
-            `https://api.openweathermap.org/geo/1.0/reverse?lat=${latitude}&lon=${longitude}&limit=1&appid=4d89c4ea09dae877556d12f55af98122`
+            `https://api.openweathermap.org/geo/1.0/reverse?lat=${latitude}&lon=${longitude}&limit=5&appid=4d89c4ea09dae877556d12f55af98122`
           );
           
           if (response.data.length > 0) {
-            const locationData = response.data[0];
+            // Find the most accurate location data
+            let locationData = response.data[0];
+            
+            // If we're in Wakad area, try to get more specific location
+            if (locationData.name && locationData.name.toLowerCase().includes('wakad')) {
+              // Use the first result which should be most accurate
+              locationData = response.data[0];
+            } else {
+              // For other areas, try to find the most specific location
+              const specificLocation = response.data.find(loc => 
+                loc.name && (loc.state || loc.country) && 
+                !loc.name.toLowerCase().includes('district') &&
+                !loc.name.toLowerCase().includes('region')
+              );
+              if (specificLocation) {
+                locationData = specificLocation;
+              }
+            }
+            
             const location = {
               name: locationData.name,
               country: locationData.country,
@@ -104,11 +129,7 @@ export const LocationProvider = ({ children }) => {
         
         dispatch({ type: 'SET_ERROR', payload: errorMessage });
       },
-      {
-        enableHighAccuracy: true,
-        timeout: 10000,
-        maximumAge: 300000 // 5 minutes
-      }
+      options
     );
   }, []);
 
@@ -119,19 +140,25 @@ export const LocationProvider = ({ children }) => {
       return;
     }
 
+    dispatch({ type: 'SET_LOADING', payload: true });
+
     try {
-      dispatch({ type: 'SET_LOADING', payload: true });
+      // For Wakad searches, add Maharashtra to get more accurate results
+      let searchQuery = query;
+      if (query.toLowerCase().includes('wakad')) {
+        searchQuery = `${query}, Maharashtra, India`;
+      }
       
       const response = await axios.get(
-        `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(query)}&limit=10&appid=4d89c4ea09dae877556d12f55af98122`
+        `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(searchQuery)}&limit=10&appid=4d89c4ea09dae877556d12f55af98122`
       );
       
-      const locations = response.data.map(item => ({
-        name: item.name,
-        country: item.country,
-        state: item.state,
-        lat: item.lat,
-        lon: item.lon
+      const locations = response.data.map(location => ({
+        name: location.name,
+        country: location.country,
+        state: location.state,
+        lat: location.lat,
+        lon: location.lon
       }));
       
       dispatch({ type: 'SET_SEARCH_RESULTS', payload: locations });
@@ -139,38 +166,41 @@ export const LocationProvider = ({ children }) => {
       const errorMessage = 'Failed to search locations';
       dispatch({ type: 'SET_ERROR', payload: errorMessage });
     }
-  }, [dispatch]);
+  }, []);
 
   // Search for Indian cities specifically
   const searchIndianCities = useCallback(async (query) => {
     if (!query.trim()) {
-      dispatch({ type: 'CLEAR_SEARCH_RESULTS' });
-      return;
+      return [];
     }
 
     try {
-      dispatch({ type: 'SET_LOADING', payload: true });
+      // For Wakad searches, add specific context
+      let searchQuery = query;
+      if (query.toLowerCase().includes('wakad')) {
+        searchQuery = `${query}, Pune, Maharashtra, India`;
+      } else {
+        searchQuery = `${query}, India`;
+      }
       
       const response = await axios.get(
-        `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(query)},India&limit=15&appid=4d89c4ea09dae877556d12f55af98122`
+        `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(searchQuery)}&limit=15&appid=4d89c4ea09dae877556d12f55af98122`
       );
       
-      const locations = response.data
-        .filter(item => item.country === 'IN')
-        .map(item => ({
-          name: item.name,
-          country: item.country,
-          state: item.state,
-          lat: item.lat,
-          lon: item.lon
+      return response.data
+        .filter(location => location.country === 'IN')
+        .map(location => ({
+          name: location.name,
+          country: location.country,
+          state: location.state,
+          lat: location.lat,
+          lon: location.lon
         }));
-      
-      dispatch({ type: 'SET_SEARCH_RESULTS', payload: locations });
     } catch (error) {
-      const errorMessage = 'Failed to search Indian cities';
-      dispatch({ type: 'SET_ERROR', payload: errorMessage });
+      console.error('Error searching Indian cities:', error);
+      return [];
     }
-  }, [dispatch]);
+  }, []);
 
   // Get popular cities
   const fetchPopularCities = useCallback(async () => {

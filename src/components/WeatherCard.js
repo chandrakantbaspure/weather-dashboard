@@ -298,14 +298,14 @@ const WeatherCard = ({ weather }) => {
         ))}
       </div>
 
-      <div className="relative z-10">
+      <div className="relative z-10 p-4 sm:p-5 md:p-6 lg:p-8">
         {/* Enhanced Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3 sm:mb-4 md:mb-6 lg:mb-8 space-y-2 sm:space-y-0">
           <motion.div 
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3 }}
-            className="flex items-center space-x-2 sm:space-x-3 md:space-x-4"
+            className="flex items-center space-x-2 sm:space-x-3 md:space-x-4 min-w-0 flex-1"
           >
             <motion.div
               animate={{ 
@@ -317,7 +317,7 @@ const WeatherCard = ({ weather }) => {
                 repeat: Infinity,
                 ease: "easeInOut"
               }}
-              className="relative"
+              className="relative flex-shrink-0"
             >
               <MapPin className="w-3 h-3 sm:w-4 sm:h-4 md:w-6 md:h-6 lg:w-7 lg:h-7 text-white drop-shadow-lg" />
               <motion.div
@@ -333,11 +333,11 @@ const WeatherCard = ({ weather }) => {
                 className="absolute inset-0 bg-white/30 rounded-full blur-md"
               />
             </motion.div>
-            <div className="min-w-0 flex-1">
-              <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold text-white drop-shadow-lg truncate">
+            <div className="min-w-0 flex-1 overflow-hidden">
+              <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold text-white drop-shadow-lg truncate pr-2">
                 {location.name}
               </h2>
-              <p className="text-xs sm:text-sm md:text-base text-white/90 drop-shadow-md truncate">
+              <p className="text-xs sm:text-sm md:text-base text-white/90 drop-shadow-md truncate pr-2">
                 {location.state && `${location.state}, `}{location.country}
               </p>
             </div>
@@ -347,16 +347,17 @@ const WeatherCard = ({ weather }) => {
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4 }}
-            className="text-right"
+            className="text-right flex-shrink-0"
           >
             <div className="flex items-center justify-end space-x-2 text-white/90">
-              <Calendar className="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-4 md:h-4" />
+              <Calendar className="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-4 md:h-4 flex-shrink-0" />
               <span className="font-medium text-xs sm:text-sm md:text-base">{format(new Date(), 'MMM dd, yyyy')}</span>
             </div>
             <div className="flex items-center justify-end space-x-2 text-white/80 mt-1">
               <motion.div
                 animate={{ rotate: 360 }}
                 transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                className="flex-shrink-0"
               >
                 <RefreshCw className="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3" />
               </motion.div>
@@ -369,7 +370,7 @@ const WeatherCard = ({ weather }) => {
 
         {/* Enhanced Main Weather Info */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-4 sm:mb-6 md:mb-8 lg:mb-10 space-y-3 sm:space-y-4 md:space-y-6 lg:space-y-0 lg:space-x-6 md:space-x-8">
-          <div className="flex items-center space-x-3 sm:space-x-4 md:space-x-6 lg:space-x-8">
+          <div className="flex items-center space-x-3 sm:space-x-4 md:space-x-6 lg:space-x-8 min-w-0 flex-1">
             <motion.div
               animate={{ 
                 rotate: [0, 10, -10, 0],
@@ -381,7 +382,7 @@ const WeatherCard = ({ weather }) => {
                 repeat: Infinity,
                 ease: "easeInOut"
               }}
-              className="relative"
+              className="relative flex-shrink-0"
             >
               <img
                 src={getWeatherIcon(current.icon)}
@@ -401,7 +402,7 @@ const WeatherCard = ({ weather }) => {
                 className="absolute inset-0 bg-white/40 rounded-full blur-xl"
               />
             </motion.div>
-            <div className="min-w-0 flex-1">
+            <div className="min-w-0 flex-1 overflow-hidden">
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -414,7 +415,7 @@ const WeatherCard = ({ weather }) => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.8 }}
-                className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl text-white/95 capitalize font-semibold truncate drop-shadow-lg"
+                className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl text-white/95 capitalize font-semibold truncate drop-shadow-lg pr-2"
               >
                 {current.description}
               </motion.div>
@@ -424,8 +425,8 @@ const WeatherCard = ({ weather }) => {
                 transition={{ delay: 1.0 }}
                 className="text-xs sm:text-sm md:text-base lg:text-lg text-white/85 flex items-center space-x-2"
               >
-                <Thermometer className="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-4 md:h-4" />
-                <span>Feels like {formatTemperature(current.feels_like)}</span>
+                <Thermometer className="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-4 md:h-4 flex-shrink-0" />
+                <span className="truncate">Feels like {formatTemperature(current.feels_like)}</span>
               </motion.div>
             </div>
           </div>
@@ -435,36 +436,38 @@ const WeatherCard = ({ weather }) => {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.7 }}
-            className="text-center lg:text-right"
+            className="text-center lg:text-right flex-shrink-0"
           >
             <div className="flex items-center justify-center lg:justify-end space-x-2 sm:space-x-3 mb-2 sm:mb-3 md:mb-4">
               <motion.div
                 animate={{ rotate: current.wind_deg }}
                 transition={{ duration: 1.5, ease: "easeOut" }}
-                className="relative"
+                className="relative flex-shrink-0"
               >
                 <div className="w-6 h-6 sm:w-8 sm:h-8 md:w-12 md:h-12 lg:w-14 lg:h-14 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/30">
                   <Wind className="w-3 h-3 sm:w-4 sm:h-4 md:w-6 md:h-6 lg:w-7 lg:h-7 text-white drop-shadow-lg" />
                 </div>
                 <motion.div
                   animate={{ 
-                    scale: [0, 1, 0],
-                    opacity: [0, 0.5, 0]
+                    scale: [0, 1.2, 0],
+                    opacity: [0, 0.4, 0]
                   }}
                   transition={{ 
                     duration: 2,
                     repeat: Infinity,
                     ease: "easeInOut"
                   }}
-                  className="absolute inset-0 bg-white/30 rounded-full blur-md"
+                  className="absolute inset-0 bg-white/30 rounded-full blur-lg"
                 />
               </motion.div>
-              <span className="text-xs sm:text-sm md:text-lg lg:text-xl text-white font-semibold drop-shadow-lg">
-                {getWindDirection(current.wind_deg)}
-              </span>
-            </div>
-            <div className="text-xs sm:text-sm md:text-base lg:text-lg text-white/90 font-medium drop-shadow-md">
-              {formatWindSpeed(current.wind_speed)}
+              <div className="min-w-0">
+                <div className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-white drop-shadow-lg">
+                  {formatWindSpeed(current.wind_speed)}
+                </div>
+                <div className="text-xs sm:text-sm md:text-base text-white/90 drop-shadow-md">
+                  {getWindDirection(current.wind_deg)}
+                </div>
+              </div>
             </div>
           </motion.div>
         </div>
