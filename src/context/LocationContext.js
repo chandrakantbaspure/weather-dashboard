@@ -65,7 +65,7 @@ export const LocationProvider = ({ children }) => {
           
           // Get location name from coordinates using reverse geocoding
           const response = await axios.get(
-            `http://api.openweathermap.org/geo/1.0/reverse?lat=${latitude}&lon=${longitude}&limit=1&appid=4d89c4ea09dae877556d12f55af98122`
+            `https://api.openweathermap.org/geo/1.0/reverse?lat=${latitude}&lon=${longitude}&limit=1&appid=4d89c4ea09dae877556d12f55af98122`
           );
           
           if (response.data.length > 0) {
@@ -123,7 +123,7 @@ export const LocationProvider = ({ children }) => {
       dispatch({ type: 'SET_LOADING', payload: true });
       
       const response = await axios.get(
-        `http://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(query)}&limit=10&appid=4d89c4ea09dae877556d12f55af98122`
+        `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(query)}&limit=10&appid=4d89c4ea09dae877556d12f55af98122`
       );
       
       const locations = response.data.map(item => ({
@@ -152,7 +152,7 @@ export const LocationProvider = ({ children }) => {
       dispatch({ type: 'SET_LOADING', payload: true });
       
       const response = await axios.get(
-        `http://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(query)},India&limit=15&appid=4d89c4ea09dae877556d12f55af98122`
+        `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(query)},India&limit=15&appid=4d89c4ea09dae877556d12f55af98122`
       );
       
       const locations = response.data
