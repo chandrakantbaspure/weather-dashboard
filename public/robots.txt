@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://your-weather-dashboard.com/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 1
+
+# Disallow API endpoints
+Disallow: /api/
+
+# Allow all other content
+Allow: /forecast
+Allow: /map
+Allow: /analytics
